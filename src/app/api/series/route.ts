@@ -28,7 +28,10 @@ export async function GET(req: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const query: any = { userId: user.userId };
 
-    if (status && ["continuing", "ended", "canceled"].includes(status)) {
+    if (
+      status &&
+      ["continuing", "ended", "canceled", "unknown"].includes(status)
+    ) {
       query.status = status;
     }
 
@@ -49,6 +52,7 @@ export async function GET(req: NextRequest) {
       continuing: allUserSeries.filter((s) => s.status === "continuing").length,
       ended: allUserSeries.filter((s) => s.status === "ended").length,
       canceled: allUserSeries.filter((s) => s.status === "canceled").length,
+      unknown: allUserSeries.filter((s) => s.status === "unknown").length,
     };
 
     return NextResponse.json({
@@ -107,7 +111,7 @@ export async function POST(req: NextRequest) {
 
     if (parsedSeasonsWatched > parsedTotalSeasons) {
       return NextResponse.json(
-        { error: "Seasons watched cannot exceed total seasons" },
+        { error: "Seasons watched cannot exceed available seasons" },
         { status: 400 },
       );
     }
@@ -119,7 +123,7 @@ export async function POST(req: NextRequest) {
       title: title.trim(),
       totalSeasons: parsedTotalSeasons,
       seasonsWatched: parsedSeasonsWatched,
-      status: ["continuing", "ended", "canceled"].includes(status)
+      status: ["continuing", "ended", "canceled", "unknown"].includes(status)
         ? status
         : "continuing",
       notes: notes ? String(notes).trim() : undefined,

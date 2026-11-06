@@ -1,6 +1,6 @@
 # EntTracker
 
-A full-stack Next.js application designed to track TV series, watched seasons, and statuses (continuing, ended, canceled).
+A full-stack Next.js application designed to track TV series, available and watched seasons, and statuses (continuing, ended, canceled, unknown).
 
 ## Tech Stack
 
@@ -61,7 +61,7 @@ You can seed your TV watchlist either:
 - `GET /api/auth/me` — Check active session claims
 
 ### TV Series Tracking
-- `GET /api/series?status=all|continuing|ended|canceled&search=...` — Retrieve series and library statistics
+- `GET /api/series?status=all|continuing|ended|canceled|unknown&search=...` — Retrieve series and library statistics
 - `POST /api/series` — Add a new series to watchlist
 - `PUT /api/series/:id` — Update season progress, status, or notes
 - `DELETE /api/series/:id` — Delete a series from watchlist

@@ -2,7 +2,7 @@ export interface InitialSeriesItem {
   title: string;
   totalSeasons: number;
   seasonsWatched: number;
-  status: "continuing" | "ended" | "canceled";
+  status: "continuing" | "ended" | "canceled" | "unknown";
   notes: string;
 }
 

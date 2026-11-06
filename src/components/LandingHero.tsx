@@ -22,7 +22,8 @@ export default function LandingHero() {
         </h2>
         <p className="max-w-xl mx-auto text-sm text-slate-600 leading-relaxed">
           Log what you’ve watched, count completed seasons, and track ongoing,
-          ended, or canceled TV series in one clean, centralized dashboard.
+          ended, canceled, or unknown-status TV series in one clean, centralized
+          dashboard.
         </p>
         <div className="flex items-center justify-center gap-3 pt-2">
           <Link

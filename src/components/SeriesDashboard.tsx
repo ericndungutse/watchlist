@@ -18,7 +18,7 @@ import {
   X,
 } from "lucide-react";
 
-export type SeriesStatus = "continuing" | "ended" | "canceled";
+export type SeriesStatus = "continuing" | "ended" | "canceled" | "unknown";
 
 export interface SeriesItem {
   _id: string;
@@ -37,6 +37,7 @@ interface StatsData {
   continuing: number;
   ended: number;
   canceled: number;
+  unknown: number;
 }
 
 export default function SeriesDashboard() {
@@ -47,6 +48,7 @@ export default function SeriesDashboard() {
     continuing: 0,
     ended: 0,
     canceled: 0,
+    unknown: 0,
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -125,14 +127,16 @@ export default function SeriesDashboard() {
     currentWatched: number,
     currentTotal: number
   ) => {
-    const newWatched = Math.max(0, currentWatched + delta);
-    const updatedTotal = Math.max(newWatched, currentTotal);
+    const newWatched = Math.min(
+      currentTotal,
+      Math.max(0, currentWatched + delta),
+    );
 
     // Optimistic UI update
     setSeriesList((prev) =>
       prev.map((s) =>
         s._id === seriesId
-          ? { ...s, seasonsWatched: newWatched, totalSeasons: updatedTotal }
+          ? { ...s, seasonsWatched: newWatched }
           : s
       )
     );
@@ -143,7 +147,6 @@ export default function SeriesDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           seasonsWatched: newWatched,
-          totalSeasons: updatedTotal,
         }),
       });
       if (!res.ok) throw new Error("Update failed");
@@ -195,7 +198,7 @@ export default function SeriesDashboard() {
     if (series) {
       setEditingSeries(series);
       setFormTitle(series.title);
-      setFormTotalSeasons(series.totalSeasons || 1);
+      setFormTotalSeasons(series.totalSeasons ?? 1);
       setFormSeasonsWatched(series.seasonsWatched || 0);
       setFormStatus(series.status);
       setFormNotes(series.notes || "");
@@ -214,6 +217,10 @@ export default function SeriesDashboard() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formTitle.trim()) return;
+    if (formSeasonsWatched > formTotalSeasons) {
+      alert("Seasons watched cannot exceed available seasons");
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -286,7 +293,7 @@ export default function SeriesDashboard() {
       )}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
         {/* Total Series */}
         <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
           <div className="flex items-center justify-between text-xs font-medium text-slate-500">
@@ -336,7 +343,7 @@ export default function SeriesDashboard() {
         </div>
 
         {/* Canceled */}
-        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs col-span-2 sm:col-span-1">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
           <div className="flex items-center justify-between text-xs font-medium text-slate-500">
             <span>Canceled</span>
             <XCircle className="h-4 w-4 text-rose-600" />
@@ -345,6 +352,17 @@ export default function SeriesDashboard() {
             {stats.canceled}
           </div>
           <p className="mt-0.5 text-[11px] text-slate-400">Discontinued</p>
+        </div>
+        {/* Unknown */}
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500">
+            <span>Unknown</span>
+            <Tv className="h-4 w-4 text-slate-500" />
+          </div>
+          <div className="mt-2 text-2xl font-bold text-slate-600 sm:text-3xl">
+            {stats.unknown}
+          </div>
+          <p className="mt-0.5 text-[11px] text-slate-400">Status not known</p>
         </div>
       </div>
 
@@ -432,6 +450,16 @@ export default function SeriesDashboard() {
         >
           Canceled ({stats.canceled})
         </button>
+        <button
+          onClick={() => setActiveTab("unknown")}
+          className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+            activeTab === "unknown"
+              ? "bg-slate-200 text-slate-800 font-semibold border border-slate-300 shadow-xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+          }`}
+        >
+          Unknown ({stats.unknown})
+        </button>
       </div>
 
       {/* Series Grid */}
@@ -468,7 +496,7 @@ export default function SeriesDashboard() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredSeries.map((item) => {
             const watched = item.seasonsWatched || 0;
-            const total = item.totalSeasons || 1;
+            const total = item.totalSeasons ?? 0;
             const progressPercent = Math.min(
               100,
               Math.round((watched / Math.max(1, total)) * 100)
@@ -500,7 +528,9 @@ export default function SeriesDashboard() {
                             ? "bg-sky-50 border-sky-200 text-sky-700"
                             : item.status === "ended"
                             ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-                            : "bg-rose-50 border-rose-200 text-rose-700"
+                              : item.status === "canceled"
+                                ? "bg-rose-50 border-rose-200 text-rose-700"
+                                : "bg-slate-100 border-slate-300 text-slate-700"
                         }`}
                       >
                         <option value="continuing" className="bg-white text-slate-900">
@@ -511,6 +541,9 @@ export default function SeriesDashboard() {
                         </option>
                         <option value="canceled" className="bg-white text-slate-900">
                           Canceled
+                        </option>
+                        <option value="unknown" className="bg-white text-slate-900">
+                          Unknown
                         </option>
                       </select>
                     </div>
@@ -531,9 +564,10 @@ export default function SeriesDashboard() {
                   {/* Progress Header */}
                   <div className="flex items-center justify-between text-xs text-slate-600">
                     <span>
-                      Watched:{" "}
+                      Seasons watched:{" "}
                       <strong className="text-slate-900 font-semibold">{watched}</strong>{" "}
-                      of {total} {total === 1 ? "Season" : "Seasons"}
+                      of {total} available
+                      {total === 1 ? " season" : " seasons"}
                     </span>
                     <span className="font-mono text-[11px] text-slate-500 font-medium">
                       {progressPercent}%
@@ -548,6 +582,8 @@ export default function SeriesDashboard() {
                           ? "bg-emerald-600"
                           : item.status === "canceled"
                           ? "bg-rose-600"
+                          : item.status === "unknown"
+                          ? "bg-slate-500"
                           : "bg-indigo-600"
                       }`}
                       style={{ width: `${progressPercent}%` }}
@@ -572,8 +608,9 @@ export default function SeriesDashboard() {
                         onClick={() =>
                           handleSeasonChange(item._id, 1, watched, total)
                         }
+                        disabled={watched >= total}
                         title="Increment watched season"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-2xs transition hover:bg-indigo-600 hover:text-white hover:border-indigo-600"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-2xs transition hover:bg-indigo-600 hover:text-white hover:border-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <ChevronUp className="h-3.5 w-3.5" />
                       </button>
@@ -638,7 +675,7 @@ export default function SeriesDashboard() {
                 />
               </div>
 
-              {/* Seasons: Watched & Total */}
+              {/* Seasons: Watched & Available */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
@@ -647,6 +684,7 @@ export default function SeriesDashboard() {
                   <input
                     type="number"
                     min={0}
+                    max={formTotalSeasons}
                     value={formSeasonsWatched}
                     onChange={(e) =>
                       setFormSeasonsWatched(parseInt(e.target.value) || 0)
@@ -656,11 +694,11 @@ export default function SeriesDashboard() {
                 </div>
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
-                    Total Seasons
+                    Available Seasons
                   </label>
                   <input
                     type="number"
-                    min={0}
+                    min={formSeasonsWatched}
                     value={formTotalSeasons}
                     onChange={(e) =>
                       setFormTotalSeasons(parseInt(e.target.value) || 0)
@@ -685,6 +723,7 @@ export default function SeriesDashboard() {
                   <option value="continuing">Continuing (Ongoing / Renewed)</option>
                   <option value="ended">Ended (Completed)</option>
                   <option value="canceled">Canceled (Discontinued)</option>
+                  <option value="unknown">Unknown</option>
                 </select>
               </div>
 

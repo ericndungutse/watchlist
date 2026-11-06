@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
-export type SeriesStatus = "continuing" | "ended" | "canceled";
+export type SeriesStatus = "continuing" | "ended" | "canceled" | "unknown";
 
 export interface ISeries extends Document {
   userId: Types.ObjectId;
@@ -30,10 +30,10 @@ const SeriesSchema: Schema<ISeries> = new Schema(
     totalSeasons: {
       type: Number,
       default: 1,
-      min: [0, "Total seasons cannot be negative"],
+      min: [0, "Available seasons cannot be negative"],
       validate: {
         validator: Number.isSafeInteger,
-        message: "Total seasons must be a whole number",
+        message: "Available seasons must be a whole number",
       },
     },
     seasonsWatched: {
@@ -48,7 +48,7 @@ const SeriesSchema: Schema<ISeries> = new Schema(
     status: {
       type: String,
       enum: {
-        values: ["continuing", "ended", "canceled"],
+        values: ["continuing", "ended", "canceled", "unknown"],
         message: "{VALUE} is not a valid series status",
       },
       default: "continuing",
@@ -72,7 +72,7 @@ SeriesSchema.pre("validate", function () {
   if (this.seasonsWatched > this.totalSeasons) {
     this.invalidate(
       "seasonsWatched",
-      "Seasons watched cannot exceed total seasons",
+      "Seasons watched cannot exceed available seasons",
     );
   }
 });

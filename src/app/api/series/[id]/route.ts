@@ -52,7 +52,7 @@ export async function PUT(
 
     if (nextSeasonsWatched > nextTotalSeasons) {
       return NextResponse.json(
-        { error: "Seasons watched cannot exceed total seasons" },
+        { error: "Seasons watched cannot exceed available seasons" },
         { status: 400 },
       );
     }
@@ -61,7 +61,10 @@ export async function PUT(
     if (totalSeasons !== undefined) existing.totalSeasons = nextTotalSeasons;
     if (seasonsWatched !== undefined)
       existing.seasonsWatched = nextSeasonsWatched;
-    if (status && ["continuing", "ended", "canceled"].includes(status)) {
+    if (
+      status &&
+      ["continuing", "ended", "canceled", "unknown"].includes(status)
+    ) {
       existing.status = status;
     }
     if (notes !== undefined) existing.notes = String(notes).trim();
