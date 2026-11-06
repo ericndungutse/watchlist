@@ -10,13 +10,13 @@ export default async function UserSessionNav() {
     return (
       <div className="flex items-center gap-3">
         <div className="text-right">
-          <div className="flex items-center gap-1.5 text-sm font-semibold text-white">
-            <User className="h-3.5 w-3.5 text-indigo-400" />
+          <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-900">
+            <User className="h-3.5 w-3.5 text-indigo-600" />
             <span>{currentUser.fullName}</span>
           </div>
-          <div className="flex items-center justify-end gap-1.5 text-xs text-zinc-400">
+          <div className="flex items-center justify-end gap-1.5 text-xs text-slate-500">
             <span>{currentUser.email}</span>
-            <span className="rounded bg-indigo-500/20 px-1 py-0.2 text-[10px] font-medium text-indigo-300 uppercase">
+            <span className="rounded-md border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-indigo-700">
               {currentUser.role}
             </span>
           </div>
@@ -30,14 +30,14 @@ export default async function UserSessionNav() {
     <div className="flex items-center gap-2.5">
       <Link
         href="/login"
-        className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-800/80 px-3.5 py-2 text-xs font-semibold text-zinc-200 transition hover:bg-zinc-700 hover:text-white"
+        className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-slate-900"
       >
-        <LogIn className="h-3.5 w-3.5" />
+        <LogIn className="h-3.5 w-3.5 text-slate-500" />
         <span>Sign In</span>
       </Link>
       <Link
         href="/signup"
-        className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <UserPlus className="h-3.5 w-3.5" />
         <span>Sign Up</span>

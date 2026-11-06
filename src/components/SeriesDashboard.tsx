@@ -271,14 +271,14 @@ export default function SeriesDashboard() {
     <div className="w-full space-y-8">
       {/* Action Notification */}
       {actionMessage && (
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-300 flex items-center justify-between">
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-            <span>{actionMessage}</span>
+            <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+            <span className="font-medium">{actionMessage}</span>
           </div>
           <button
             onClick={() => setActionMessage(null)}
-            className="text-emerald-400 hover:text-emerald-200"
+            className="text-emerald-600 hover:text-emerald-800"
           >
             <X className="h-4 w-4" />
           </button>
@@ -288,63 +288,63 @@ export default function SeriesDashboard() {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4">
         {/* Total Series */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 backdrop-blur-sm">
-          <div className="flex items-center justify-between text-xs font-medium text-zinc-400">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500">
             <span>Total Series</span>
-            <Tv className="h-4 w-4 text-indigo-400" />
+            <Tv className="h-4 w-4 text-indigo-600" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-white sm:text-3xl">
+          <div className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
             {stats.totalSeries}
           </div>
-          <p className="mt-0.5 text-[11px] text-zinc-500">Tracked in library</p>
+          <p className="mt-0.5 text-[11px] text-slate-400">Tracked in library</p>
         </div>
 
         {/* Total Seasons Watched */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 backdrop-blur-sm">
-          <div className="flex items-center justify-between text-xs font-medium text-zinc-400">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500">
             <span>Seasons Watched</span>
-            <TrendingUp className="h-4 w-4 text-emerald-400" />
+            <TrendingUp className="h-4 w-4 text-emerald-600" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-emerald-400 sm:text-3xl">
+          <div className="mt-2 text-2xl font-bold text-emerald-600 sm:text-3xl">
             {stats.totalSeasonsWatched}
           </div>
-          <p className="mt-0.5 text-[11px] text-zinc-500">Completed seasons</p>
+          <p className="mt-0.5 text-[11px] text-slate-400">Completed seasons</p>
         </div>
 
         {/* Continuing */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 backdrop-blur-sm">
-          <div className="flex items-center justify-between text-xs font-medium text-zinc-400">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500">
             <span>Continuing</span>
-            <Clock className="h-4 w-4 text-sky-400" />
+            <Clock className="h-4 w-4 text-sky-600" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-sky-400 sm:text-3xl">
+          <div className="mt-2 text-2xl font-bold text-sky-600 sm:text-3xl">
             {stats.continuing}
           </div>
-          <p className="mt-0.5 text-[11px] text-zinc-500">Awaiting seasons</p>
+          <p className="mt-0.5 text-[11px] text-slate-400">Awaiting seasons</p>
         </div>
 
         {/* Ended */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 backdrop-blur-sm">
-          <div className="flex items-center justify-between text-xs font-medium text-zinc-400">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500">
             <span>Ended</span>
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-zinc-200 sm:text-3xl">
+          <div className="mt-2 text-2xl font-bold text-slate-800 sm:text-3xl">
             {stats.ended}
           </div>
-          <p className="mt-0.5 text-[11px] text-zinc-500">Finished series</p>
+          <p className="mt-0.5 text-[11px] text-slate-400">Finished series</p>
         </div>
 
         {/* Canceled */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 backdrop-blur-sm col-span-2 sm:col-span-1">
-          <div className="flex items-center justify-between text-xs font-medium text-zinc-400">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs col-span-2 sm:col-span-1">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500">
             <span>Canceled</span>
-            <XCircle className="h-4 w-4 text-rose-400" />
+            <XCircle className="h-4 w-4 text-rose-600" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-rose-400 sm:text-3xl">
+          <div className="mt-2 text-2xl font-bold text-rose-600 sm:text-3xl">
             {stats.canceled}
           </div>
-          <p className="mt-0.5 text-[11px] text-zinc-500">Discontinued</p>
+          <p className="mt-0.5 text-[11px] text-slate-400">Discontinued</p>
         </div>
       </div>
 
@@ -352,7 +352,7 @@ export default function SeriesDashboard() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Search Input */}
         <div className="relative flex-1">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-zinc-500">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
             <Search className="h-4 w-4" />
           </div>
           <input
@@ -360,7 +360,7 @@ export default function SeriesDashboard() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search TV series or notes (e.g., 'Silo', 'August 2026')..."
-            className="block w-full rounded-xl border border-zinc-800 bg-zinc-900/80 py-2.5 pl-10 pr-4 text-sm text-white placeholder-zinc-500 transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="block w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder-slate-400 shadow-xs transition focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
           />
         </div>
 
@@ -370,19 +370,19 @@ export default function SeriesDashboard() {
             onClick={handleSeedData}
             disabled={isSeeding}
             title="Import all 35 TV shows to your account"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-2.5 text-xs font-semibold text-indigo-300 transition hover:bg-indigo-500/20 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-indigo-50 px-3.5 py-2.5 text-xs font-semibold text-indigo-700 shadow-xs transition hover:bg-indigo-100 disabled:opacity-50"
           >
             {isSeeding ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              <Sparkles className="h-4 w-4" />
+              <Sparkles className="h-4 w-4 text-indigo-600" />
             )}
             <span>Sync 35 Series</span>
           </button>
 
           <button
             onClick={() => openModal()}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
           >
             <Plus className="h-4 w-4" />
             <span>Add Series</span>
@@ -391,13 +391,13 @@ export default function SeriesDashboard() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-zinc-800 pb-3 text-sm">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-3 text-sm">
         <button
           onClick={() => setActiveTab("all")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
             activeTab === "all"
-              ? "bg-zinc-800 text-white font-semibold"
-              : "text-zinc-400 hover:text-white"
+              ? "bg-slate-900 text-white font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
           }`}
         >
           All ({stats.totalSeries})
@@ -406,8 +406,8 @@ export default function SeriesDashboard() {
           onClick={() => setActiveTab("continuing")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
             activeTab === "continuing"
-              ? "bg-sky-500/20 text-sky-300 font-semibold border border-sky-500/30"
-              : "text-zinc-400 hover:text-sky-300"
+              ? "bg-sky-100 text-sky-800 font-semibold border border-sky-300 shadow-xs"
+              : "text-slate-600 hover:text-sky-700 hover:bg-sky-50"
           }`}
         >
           Continuing ({stats.continuing})
@@ -416,8 +416,8 @@ export default function SeriesDashboard() {
           onClick={() => setActiveTab("ended")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
             activeTab === "ended"
-              ? "bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30"
-              : "text-zinc-400 hover:text-emerald-300"
+              ? "bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300 shadow-xs"
+              : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
           }`}
         >
           Ended ({stats.ended})
@@ -426,8 +426,8 @@ export default function SeriesDashboard() {
           onClick={() => setActiveTab("canceled")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
             activeTab === "canceled"
-              ? "bg-rose-500/20 text-rose-300 font-semibold border border-rose-500/30"
-              : "text-zinc-400 hover:text-rose-300"
+              ? "bg-rose-100 text-rose-800 font-semibold border border-rose-300 shadow-xs"
+              : "text-slate-600 hover:text-rose-700 hover:bg-rose-50"
           }`}
         >
           Canceled ({stats.canceled})
@@ -436,18 +436,18 @@ export default function SeriesDashboard() {
 
       {/* Series Grid */}
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-zinc-500 space-y-3">
-          <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
-          <p className="text-sm">Loading your TV series...</p>
+        <div className="flex flex-col items-center justify-center py-20 text-slate-500 space-y-3">
+          <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+          <p className="text-sm font-medium">Loading your TV series...</p>
         </div>
       ) : filteredSeries.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-zinc-800 p-12 text-center space-y-4">
-          <Tv className="mx-auto h-12 w-12 text-zinc-600" />
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4 shadow-xs">
+          <Tv className="mx-auto h-12 w-12 text-slate-400" />
           <div className="space-y-1">
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-slate-900">
               No TV series found
             </h3>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-slate-500">
               {seriesList.length === 0
                 ? "Your watchlist is empty. Click 'Sync 35 Series' to load your complete list!"
                 : "No series match your current filter or search criteria."}
@@ -457,7 +457,7 @@ export default function SeriesDashboard() {
             <button
               onClick={handleSeedData}
               disabled={isSeeding}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
             >
               <Sparkles className="h-4 w-4" />
               <span>Load My 35 Series</span>
@@ -477,12 +477,12 @@ export default function SeriesDashboard() {
             return (
               <div
                 key={item._id}
-                className="group flex flex-col justify-between rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 shadow-lg transition hover:border-zinc-700 hover:bg-zinc-900/90"
+                className="group flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs transition hover:border-slate-300 hover:shadow-md"
               >
                 {/* Header & Status */}
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-white text-base leading-snug line-clamp-2">
+                    <h3 className="font-bold text-slate-900 text-base leading-snug line-clamp-2">
                       {item.title}
                     </h3>
                     {/* Status Pill */}
@@ -495,21 +495,21 @@ export default function SeriesDashboard() {
                             e.target.value as SeriesStatus
                           )
                         }
-                        className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold border cursor-pointer focus:outline-none ${
+                        className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold border cursor-pointer focus:outline-none transition ${
                           item.status === "continuing"
-                            ? "bg-sky-500/15 border-sky-500/30 text-sky-300"
+                            ? "bg-sky-50 border-sky-200 text-sky-700"
                             : item.status === "ended"
-                            ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
-                            : "bg-rose-500/15 border-rose-500/30 text-rose-300"
+                            ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                            : "bg-rose-50 border-rose-200 text-rose-700"
                         }`}
                       >
-                        <option value="continuing" className="bg-zinc-900 text-white">
+                        <option value="continuing" className="bg-white text-slate-900">
                           Continuing
                         </option>
-                        <option value="ended" className="bg-zinc-900 text-white">
+                        <option value="ended" className="bg-white text-slate-900">
                           Ended
                         </option>
-                        <option value="canceled" className="bg-zinc-900 text-white">
+                        <option value="canceled" className="bg-white text-slate-900">
                           Canceled
                         </option>
                       </select>
@@ -518,37 +518,37 @@ export default function SeriesDashboard() {
 
                   {/* Notes / Release Info */}
                   {item.notes ? (
-                    <p className="text-xs text-zinc-400 line-clamp-3 leading-relaxed rounded-lg bg-zinc-950/40 p-2.5 border border-zinc-800/60">
+                    <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed rounded-lg bg-slate-50 p-2.5 border border-slate-200/70">
                       {item.notes}
                     </p>
                   ) : (
-                    <p className="text-xs text-zinc-600 italic">No notes added</p>
+                    <p className="text-xs text-slate-400 italic">No notes added</p>
                   )}
                 </div>
 
                 {/* Season Counter & Actions */}
-                <div className="mt-5 space-y-3 pt-3 border-t border-zinc-800/70">
+                <div className="mt-5 space-y-3 pt-3 border-t border-slate-100">
                   {/* Progress Header */}
-                  <div className="flex items-center justify-between text-xs text-zinc-400">
+                  <div className="flex items-center justify-between text-xs text-slate-600">
                     <span>
                       Watched:{" "}
-                      <strong className="text-white font-semibold">{watched}</strong>{" "}
+                      <strong className="text-slate-900 font-semibold">{watched}</strong>{" "}
                       of {total} {total === 1 ? "Season" : "Seasons"}
                     </span>
-                    <span className="font-mono text-[11px] text-zinc-500">
+                    <span className="font-mono text-[11px] text-slate-500 font-medium">
                       {progressPercent}%
                     </span>
                   </div>
 
                   {/* Progress Bar */}
-                  <div className="h-1.5 w-full rounded-full bg-zinc-800 overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
                     <div
                       className={`h-full transition-all duration-300 rounded-full ${
                         item.status === "ended"
-                          ? "bg-emerald-500"
+                          ? "bg-emerald-600"
                           : item.status === "canceled"
-                          ? "bg-rose-500"
-                          : "bg-indigo-500"
+                          ? "bg-rose-600"
+                          : "bg-indigo-600"
                       }`}
                       style={{ width: `${progressPercent}%` }}
                     />
@@ -564,7 +564,7 @@ export default function SeriesDashboard() {
                         }
                         disabled={watched <= 0}
                         title="Decrement watched season"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 transition hover:bg-zinc-800 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-2xs transition hover:bg-slate-100 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <ChevronDown className="h-3.5 w-3.5" />
                       </button>
@@ -573,11 +573,11 @@ export default function SeriesDashboard() {
                           handleSeasonChange(item._id, 1, watched, total)
                         }
                         title="Increment watched season"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-300 transition hover:bg-indigo-600 hover:text-white hover:border-indigo-500"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-2xs transition hover:bg-indigo-600 hover:text-white hover:border-indigo-600"
                       >
                         <ChevronUp className="h-3.5 w-3.5" />
                       </button>
-                      <span className="text-xs text-zinc-500 pl-1">
+                      <span className="text-xs text-slate-500 pl-1 font-medium">
                         +1 Season
                       </span>
                     </div>
@@ -587,14 +587,14 @@ export default function SeriesDashboard() {
                       <button
                         onClick={() => openModal(item)}
                         title="Edit Series"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => handleDelete(item._id, item.title)}
                         title="Delete Series"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-500 hover:bg-rose-500/20 hover:text-rose-400 transition"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -609,23 +609,23 @@ export default function SeriesDashboard() {
 
       {/* Add / Edit Series Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl sm:p-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
+          <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl sm:p-8">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute right-4 top-4 text-zinc-400 hover:text-white"
+              className="absolute right-4 top-4 text-slate-400 hover:text-slate-700"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <h3 className="text-xl font-bold text-white mb-5">
+            <h3 className="text-xl font-bold text-slate-900 mb-5">
               {editingSeries ? "Edit TV Series" : "Add TV Series"}
             </h3>
 
             <form onSubmit={handleFormSubmit} className="space-y-4">
               {/* Title */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
                   Series Title *
                 </label>
                 <input
@@ -634,14 +634,14 @@ export default function SeriesDashboard() {
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   placeholder="e.g. Silo, House of the Dragon"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2.5 px-3.5 text-sm text-white placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2.5 px-3.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
                 />
               </div>
 
               {/* Seasons: Watched & Total */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
                     Seasons Watched
                   </label>
                   <input
@@ -651,11 +651,11 @@ export default function SeriesDashboard() {
                     onChange={(e) =>
                       setFormSeasonsWatched(parseInt(e.target.value) || 0)
                     }
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 px-3 text-sm text-white focus:border-indigo-500 focus:outline-none"
+                    className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
                     Total Seasons
                   </label>
                   <input
@@ -665,14 +665,14 @@ export default function SeriesDashboard() {
                     onChange={(e) =>
                       setFormTotalSeasons(parseInt(e.target.value) || 0)
                     }
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 px-3 text-sm text-white focus:border-indigo-500 focus:outline-none"
+                    className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:outline-none"
                   />
                 </div>
               </div>
 
               {/* Status */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
                   Show Status
                 </label>
                 <select
@@ -680,7 +680,7 @@ export default function SeriesDashboard() {
                   onChange={(e) =>
                     setFormStatus(e.target.value as SeriesStatus)
                   }
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2.5 px-3 text-sm text-white focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2.5 px-3 text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:outline-none"
                 >
                   <option value="continuing">Continuing (Ongoing / Renewed)</option>
                   <option value="ended">Ended (Completed)</option>
@@ -690,7 +690,7 @@ export default function SeriesDashboard() {
 
               {/* Notes */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
                   Notes & Release Info
                 </label>
                 <textarea
@@ -698,7 +698,7 @@ export default function SeriesDashboard() {
                   value={formNotes}
                   onChange={(e) => setFormNotes(e.target.value)}
                   placeholder="e.g. Season 2 to release August 2026, awaiting final season..."
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 px-3 text-sm text-white placeholder-zinc-500 focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-600 focus:outline-none"
                 />
               </div>
 
@@ -707,14 +707,14 @@ export default function SeriesDashboard() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="rounded-xl border border-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                  className="rounded-xl border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                   <span>{editingSeries ? "Save Changes" : "Add to Library"}</span>
