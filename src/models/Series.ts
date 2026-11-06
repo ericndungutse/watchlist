@@ -80,7 +80,22 @@ SeriesSchema.pre("validate", function () {
 // Compound index to speed up user-scoped title lookups.
 SeriesSchema.index({ userId: 1, title: 1 });
 
-// Prevent re-compiling model in Next.js development
+const cachedSeriesModel = mongoose.models.Series as Model<ISeries> | undefined;
+const cachedStatusEnum = cachedSeriesModel?.schema.path("status").options.enum;
+const cachedStatusValues = Array.isArray(cachedStatusEnum)
+  ? cachedStatusEnum
+  : typeof cachedStatusEnum === "object" &&
+      cachedStatusEnum !== null &&
+      "values" in cachedStatusEnum &&
+      Array.isArray(cachedStatusEnum.values)
+    ? cachedStatusEnum.values
+    : [];
+
+// Refresh models cached by Next.js hot reload when the status enum changes.
+if (cachedSeriesModel && !cachedStatusValues.includes("unknown")) {
+  delete mongoose.models.Series;
+}
+
 export const Series: Model<ISeries> =
   mongoose.models.Series || mongoose.model<ISeries>("Series", SeriesSchema);
 
