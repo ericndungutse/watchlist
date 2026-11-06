@@ -3,13 +3,19 @@ import connectToDatabase from "@/lib/mongodb";
 import Series from "@/models/Series";
 import { getCurrentUser } from "@/lib/auth";
 
+const isNonNegativeInteger = (value: unknown): boolean =>
+  (typeof value === "number" ||
+    (typeof value === "string" && value.trim() !== "")) &&
+  Number.isSafeInteger(Number(value)) &&
+  Number(value) >= 0;
+
 export async function GET(req: NextRequest) {
   try {
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
         { error: "Unauthorized. Please log in." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -38,7 +44,7 @@ export async function GET(req: NextRequest) {
       totalSeries: allUserSeries.length,
       totalSeasonsWatched: allUserSeries.reduce(
         (sum, item) => sum + (item.seasonsWatched || 0),
-        0
+        0,
       ),
       continuing: allUserSeries.filter((s) => s.status === "continuing").length,
       ended: allUserSeries.filter((s) => s.status === "ended").length,
@@ -55,9 +61,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         error:
-          error instanceof Error ? error.message : "Failed to fetch series list",
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch series list",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -68,7 +76,7 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json(
         { error: "Unauthorized. Please log in." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -78,7 +86,29 @@ export async function POST(req: NextRequest) {
     if (!title || typeof title !== "string" || !title.trim()) {
       return NextResponse.json(
         { error: "Series title is required" },
-        { status: 400 }
+        { status: 400 },
+      );
+    }
+
+    if (
+      (totalSeasons !== undefined && !isNonNegativeInteger(totalSeasons)) ||
+      (seasonsWatched !== undefined && !isNonNegativeInteger(seasonsWatched))
+    ) {
+      return NextResponse.json(
+        { error: "Season counts must be non-negative whole numbers" },
+        { status: 400 },
+      );
+    }
+
+    const parsedTotalSeasons =
+      totalSeasons === undefined ? 1 : Number(totalSeasons);
+    const parsedSeasonsWatched =
+      seasonsWatched === undefined ? 0 : Number(seasonsWatched);
+
+    if (parsedSeasonsWatched > parsedTotalSeasons) {
+      return NextResponse.json(
+        { error: "Seasons watched cannot exceed total seasons" },
+        { status: 400 },
       );
     }
 
@@ -87,8 +117,8 @@ export async function POST(req: NextRequest) {
     const newSeries = await Series.create({
       userId: user.userId,
       title: title.trim(),
-      totalSeasons: Number(totalSeasons) || 1,
-      seasonsWatched: Number(seasonsWatched) || 0,
+      totalSeasons: parsedTotalSeasons,
+      seasonsWatched: parsedSeasonsWatched,
       status: ["continuing", "ended", "canceled"].includes(status)
         ? status
         : "continuing",
@@ -102,7 +132,7 @@ export async function POST(req: NextRequest) {
         message: "Series added successfully",
         series: newSeries,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: unknown) {
     console.error("POST /api/series error:", error);
@@ -111,7 +141,7 @@ export async function POST(req: NextRequest) {
         error:
           error instanceof Error ? error.message : "Failed to create series",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

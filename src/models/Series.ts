@@ -31,11 +31,19 @@ const SeriesSchema: Schema<ISeries> = new Schema(
       type: Number,
       default: 1,
       min: [0, "Total seasons cannot be negative"],
+      validate: {
+        validator: Number.isSafeInteger,
+        message: "Total seasons must be a whole number",
+      },
     },
     seasonsWatched: {
       type: Number,
       default: 0,
       min: [0, "Seasons watched cannot be negative"],
+      validate: {
+        validator: Number.isSafeInteger,
+        message: "Seasons watched must be a whole number",
+      },
     },
     status: {
       type: String,
@@ -57,10 +65,19 @@ const SeriesSchema: Schema<ISeries> = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-// Compound index to help fast lookup and prevent duplicate titles per user
+SeriesSchema.pre("validate", function () {
+  if (this.seasonsWatched > this.totalSeasons) {
+    this.invalidate(
+      "seasonsWatched",
+      "Seasons watched cannot exceed total seasons",
+    );
+  }
+});
+
+// Compound index to speed up user-scoped title lookups.
 SeriesSchema.index({ userId: 1, title: 1 });
 
 // Prevent re-compiling model in Next.js development

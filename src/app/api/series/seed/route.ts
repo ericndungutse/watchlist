@@ -11,7 +11,7 @@ export async function POST() {
     if (!user) {
       return NextResponse.json(
         { error: "Unauthorized. Please log in first." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -23,11 +23,13 @@ export async function POST() {
         filter: { userId: userObjectId, title: item.title },
         update: {
           $set: {
-            userId: userObjectId,
             title: item.title,
             totalSeasons: item.totalSeasons,
-            seasonsWatched: item.seasonsWatched,
             status: item.status,
+          },
+          $setOnInsert: {
+            userId: userObjectId,
+            seasonsWatched: item.seasonsWatched,
             notes: item.notes,
           },
         },
@@ -53,7 +55,7 @@ export async function POST() {
         error:
           error instanceof Error ? error.message : "Failed to seed watchlist",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

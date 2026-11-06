@@ -3,16 +3,22 @@ import connectToDatabase from "@/lib/mongodb";
 import Series from "@/models/Series";
 import { getCurrentUser } from "@/lib/auth";
 
+const isNonNegativeInteger = (value: unknown): boolean =>
+  (typeof value === "number" ||
+    (typeof value === "string" && value.trim() !== "")) &&
+  Number.isSafeInteger(Number(value)) &&
+  Number(value) >= 0;
+
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
         { error: "Unauthorized. Please log in." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -24,15 +30,37 @@ export async function PUT(
 
     const existing = await Series.findOne({ _id: id, userId: user.userId });
     if (!existing) {
+      return NextResponse.json({ error: "Series not found" }, { status: 404 });
+    }
+
+    if (
+      (totalSeasons !== undefined && !isNonNegativeInteger(totalSeasons)) ||
+      (seasonsWatched !== undefined && !isNonNegativeInteger(seasonsWatched))
+    ) {
       return NextResponse.json(
-        { error: "Series not found" },
-        { status: 404 }
+        { error: "Season counts must be non-negative whole numbers" },
+        { status: 400 },
+      );
+    }
+
+    const nextTotalSeasons =
+      totalSeasons === undefined ? existing.totalSeasons : Number(totalSeasons);
+    const nextSeasonsWatched =
+      seasonsWatched === undefined
+        ? existing.seasonsWatched
+        : Number(seasonsWatched);
+
+    if (nextSeasonsWatched > nextTotalSeasons) {
+      return NextResponse.json(
+        { error: "Seasons watched cannot exceed total seasons" },
+        { status: 400 },
       );
     }
 
     if (title !== undefined) existing.title = title.trim();
-    if (totalSeasons !== undefined) existing.totalSeasons = Math.max(0, Number(totalSeasons));
-    if (seasonsWatched !== undefined) existing.seasonsWatched = Math.max(0, Number(seasonsWatched));
+    if (totalSeasons !== undefined) existing.totalSeasons = nextTotalSeasons;
+    if (seasonsWatched !== undefined)
+      existing.seasonsWatched = nextSeasonsWatched;
     if (status && ["continuing", "ended", "canceled"].includes(status)) {
       existing.status = status;
     }
@@ -53,33 +81,33 @@ export async function PUT(
         error:
           error instanceof Error ? error.message : "Failed to update series",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
         { error: "Unauthorized. Please log in." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const { id } = await params;
     await connectToDatabase();
 
-    const result = await Series.findOneAndDelete({ _id: id, userId: user.userId });
+    const result = await Series.findOneAndDelete({
+      _id: id,
+      userId: user.userId,
+    });
     if (!result) {
-      return NextResponse.json(
-        { error: "Series not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Series not found" }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -93,7 +121,7 @@ export async function DELETE(
         error:
           error instanceof Error ? error.message : "Failed to delete series",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

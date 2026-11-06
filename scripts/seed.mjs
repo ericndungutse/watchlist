@@ -135,7 +135,8 @@ const RAW_SERIES = [
     totalSeasons: 2,
     seasonsWatched: 1,
     status: "continuing",
-    notes: "Season 1 released in 2024 watched. Season 2 to release August 2026.",
+    notes:
+      "Season 1 released in 2024 watched. Season 2 to release August 2026.",
   },
   {
     title: "The Veil (2024)",
@@ -156,7 +157,8 @@ const RAW_SERIES = [
     totalSeasons: 3,
     seasonsWatched: 2,
     status: "continuing",
-    notes: "Seasons 1 & 2 watched. Season 3 in release. Final season incoming in 2027.",
+    notes:
+      "Seasons 1 & 2 watched. Season 3 in release. Final season incoming in 2027.",
   },
   {
     title: "Avatar: The Last Airbender",
@@ -257,11 +259,11 @@ async function run() {
 
   const User = mongoose.model(
     "User",
-    new mongoose.Schema({}, { strict: false })
+    new mongoose.Schema({}, { strict: false }),
   );
   const Series = mongoose.model(
     "Series",
-    new mongoose.Schema({}, { strict: false })
+    new mongoose.Schema({}, { strict: false }),
   );
 
   const users = await User.find({});
@@ -272,18 +274,22 @@ async function run() {
   }
 
   for (const user of users) {
-    console.log(`Seeding 35 series for user: ${user.fullName} (${user.email})...`);
+    console.log(
+      `Seeding 35 series for user: ${user.fullName} (${user.email})...`,
+    );
 
     const operations = RAW_SERIES.map((item) => ({
       updateOne: {
         filter: { userId: user._id, title: item.title },
         update: {
           $set: {
-            userId: user._id,
             title: item.title,
             totalSeasons: item.totalSeasons,
-            seasonsWatched: item.seasonsWatched,
             status: item.status,
+          },
+          $setOnInsert: {
+            userId: user._id,
+            seasonsWatched: item.seasonsWatched,
             notes: item.notes,
           },
         },
@@ -293,7 +299,7 @@ async function run() {
 
     const result = await Series.bulkWrite(operations);
     console.log(
-      `✓ Seeded for ${user.email}: ${result.upsertedCount} inserted, ${result.modifiedCount} updated.`
+      `✓ Seeded for ${user.email}: ${result.upsertedCount} inserted, ${result.modifiedCount} updated.`,
     );
   }
 
