@@ -12,7 +12,6 @@ import {
   Edit2,
   Trash2,
   Loader2,
-  Sparkles,
   ChevronUp,
   ChevronDown,
   X,
@@ -64,8 +63,6 @@ export default function SeriesDashboard() {
   const [formStatus, setFormStatus] = useState<SeriesStatus>("continuing");
   const [formNotes, setFormNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSeeding, setIsSeeding] = useState(false);
-  const [actionMessage, setActionMessage] = useState<string | null>(null);
 
   // Fetch Series
   const fetchSeries = useCallback(async () => {
@@ -101,24 +98,6 @@ export default function SeriesDashboard() {
       isMounted = false;
     };
   }, []);
-
-  // Seed user's 35 digitalized series
-  const handleSeedData = async () => {
-    setIsSeeding(true);
-    setActionMessage(null);
-    try {
-      const res = await fetch("/api/series/seed", { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to seed watchlist");
-      setActionMessage("Successfully synchronized your 35 TV series!");
-      await fetchSeries();
-    } catch (err) {
-      setActionMessage(err instanceof Error ? err.message : "Error syncing");
-    } finally {
-      setIsSeeding(false);
-      setTimeout(() => setActionMessage(null), 4000);
-    }
-  };
 
   // Quick Season Increments / Decrements
   const handleSeasonChange = async (
@@ -276,22 +255,6 @@ export default function SeriesDashboard() {
 
   return (
     <div className="w-full space-y-8">
-      {/* Action Notification */}
-      {actionMessage && (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 flex items-center justify-between shadow-xs">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-            <span className="font-medium">{actionMessage}</span>
-          </div>
-          <button
-            onClick={() => setActionMessage(null)}
-            className="text-emerald-600 hover:text-emerald-800"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-      )}
-
       {/* Stats Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
         {/* Total Series */}
@@ -382,22 +345,7 @@ export default function SeriesDashboard() {
           />
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={handleSeedData}
-            disabled={isSeeding}
-            title="Import all 35 TV shows to your account"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-indigo-50 px-3.5 py-2.5 text-xs font-semibold text-indigo-700 shadow-xs transition hover:bg-indigo-100 disabled:opacity-50"
-          >
-            {isSeeding ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Sparkles className="h-4 w-4 text-indigo-600" />
-            )}
-            <span>Sync 35 Series</span>
-          </button>
-
+        <div className="flex items-center">
           <button
             onClick={() => openModal()}
             className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
@@ -477,20 +425,10 @@ export default function SeriesDashboard() {
             </h3>
             <p className="text-sm text-slate-500">
               {seriesList.length === 0
-                ? "Your watchlist is empty. Click 'Sync 35 Series' to load your complete list!"
+                ? "Your watchlist is empty. Add a series to start tracking it."
                 : "No series match your current filter or search criteria."}
             </p>
           </div>
-          {seriesList.length === 0 && (
-            <button
-              onClick={handleSeedData}
-              disabled={isSeeding}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
-            >
-              <Sparkles className="h-4 w-4" />
-              <span>Load My 35 Series</span>
-            </button>
-          )}
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
