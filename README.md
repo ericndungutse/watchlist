@@ -8,7 +8,7 @@ A full-stack Next.js application designed to track TV series, watched seasons, a
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Database:** [MongoDB](https://www.mongodb.com/) via [Mongoose](https://mongoosejs.com/)
-- **Security:** [bcryptjs](https://github.com/dcodeIO/bcrypt.js) for password hashing
+- **Security:** [bcryptjs](https://github.com/dcodeIO/bcrypt.js) & [jose](https://github.com/panva/jose) (JWT in HTTP-only cookies)
 
 ---
 
@@ -16,7 +16,7 @@ A full-stack Next.js application designed to track TV series, watched seasons, a
 
 ### 1. Environment Setup
 
-Copy `.env.example` to `.env.local` and configure your MongoDB connection URI:
+Copy `.env.example` to `.env.local` and configure your MongoDB connection URI and JWT secret:
 
 ```bash
 cp .env.example .env.local
@@ -25,11 +25,10 @@ cp .env.example .env.local
 Example in `.env.local`:
 ```env
 MONGODB_URI=mongodb://localhost:27017/ent-tracker
+JWT_SECRET=your-secret-key-32-chars-long
 ```
 
 ### 2. Run Local MongoDB (Optional via Docker)
-
-You can spin up local MongoDB and Mongo Express with Docker:
 
 ```bash
 docker compose up -d
@@ -45,23 +44,28 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
+### 4. Seed 35 TV Series
+
+You can seed your TV watchlist either:
+- Via the CLI: `npm run seed`
+- Or directly in the web UI using the **"Sync 35 Series"** button on the dashboard.
+
 ---
 
-## Authentication & API Routes
+## API Routes
 
-- **Login Page:** [http://localhost:3000/login](http://localhost:3000/login)
-- **Signup Page:** [http://localhost:3000/signup](http://localhost:3000/signup)
-- **Login API:** `POST /api/auth/login`
-  - Body: `{ "email": "user@example.com", "password": "password123" }`
-  - Result: Verifies password with bcrypt, signs JWT, and sets secure HTTP-only cookie (`ent_auth_token`).
-- **Signup API:** `POST /api/auth/signup`
-  - Body: `{ "fullName": "Jane Doe", "email": "jane@example.com", "password": "securepassword123" }`
-  - Result: Hashes password with bcrypt, stores user, and automatically sets secure session cookie.
-- **Logout API:** `POST /api/auth/logout`
-  - Result: Clears the HTTP-only session cookie.
-- **Session Check API:** `GET /api/auth/me`
-  - Result: Returns current authenticated user claims from the JWT session.
-- **Health Check API:** `GET /api/health`
+### Authentication
+- `POST /api/auth/signup` — Create user account & set session cookie
+- `POST /api/auth/login` — Sign in with email & password, set HTTP-only cookie
+- `POST /api/auth/logout` — Clear session cookie
+- `GET /api/auth/me` — Check active session claims
+
+### TV Series Tracking
+- `GET /api/series?status=all|continuing|ended|canceled&search=...` — Retrieve series and library statistics
+- `POST /api/series` — Add a new series to watchlist
+- `PUT /api/series/:id` — Update season progress, status, or notes
+- `DELETE /api/series/:id` — Delete a series from watchlist
+- `POST /api/series/seed` — Bulk upsert the user's 35 TV shows
 
 ---
 
@@ -70,41 +74,39 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 ```text
 ent-tracker/
 ├── docker-compose.yml           # Local MongoDB & Mongo Express containers
+├── scripts/
+│   └── seed.mjs                 # CLI script to seed TV series into MongoDB
 ├── src/
 │   ├── app/
 │   │   ├── api/
 │   │   │   ├── auth/
-│   │   │   │   ├── login/
-│   │   │   │   │   └── route.ts # User login & HTTP-only JWT cookie setter
-│   │   │   │   ├── logout/
-│   │   │   │   │   └── route.ts # User logout & cookie clearer
-│   │   │   │   ├── me/
-│   │   │   │   │   └── route.ts # Session validation endpoint
-│   │   │   │   └── signup/
-│   │   │   │       └── route.ts # User signup endpoint (bcrypt hash, role: 'user')
-│   │   │   └── health/
-│   │   │       └── route.ts     # Health check & DB connection test
-│   │   ├── login/
-│   │   │   └── page.tsx         # User login form
-│   │   ├── signup/
-│   │   │   └── page.tsx         # User signup form
-│   │   ├── favicon.ico
-│   │   ├── globals.css          # Tailwind CSS styling
-│   │   ├── layout.tsx           # Root layout & metadata
-│   │   └── page.tsx             # Home landing page with live user session
+│   │   │   │   ├── login/route.ts
+│   │   │   │   ├── logout/route.ts
+│   │   │   │   ├── me/route.ts
+│   │   │   │   └── signup/route.ts
+│   │   │   ├── series/
+│   │   │   │   ├── [id]/route.ts
+│   │   │   │   ├── seed/route.ts
+│   │   │   │   └── route.ts
+│   │   │   └── health/route.ts
+│   │   ├── login/page.tsx
+│   │   ├── signup/page.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
 │   ├── components/
-│   │   └── LogoutButton.tsx     # Client-side sign out button
+│   │   ├── LandingHero.tsx
+│   │   ├── LogoutButton.tsx
+│   │   ├── MainContent.tsx
+│   │   ├── SeriesDashboard.tsx  # Full tracking UI (KPIs, search, filters, modals)
+│   │   └── UserSessionNav.tsx
 │   ├── lib/
-│   │   ├── auth.ts              # JWT signing, verification, & cookie helpers (jose)
+│   │   ├── auth.ts              # JWT & session cookie helpers
+│   │   ├── initialSeriesData.ts # Digitalized catalog of 35 TV series
 │   │   └── mongodb.ts           # Cached Mongoose connection helper
 │   └── models/
-│       ├── Series.ts            # Mongoose Series schema & TypeScript interface
-│       └── User.ts              # Mongoose User schema (fullName, email, bcrypt, role)
-├── .env.example                 # Example environment variables
-├── .env.local                   # Local environment variables (git-ignored)
-├── next.config.ts               # Next.js configuration
-├── package.json                 # Project dependencies & scripts
-├── tsconfig.json                # TypeScript configuration
+│       ├── Series.ts            # Mongoose Series schema with userId index
+│       └── User.ts              # Mongoose User schema with bcrypt
 └── README.md
 ```
 
@@ -113,6 +115,7 @@ ent-tracker/
 ## Available Scripts
 
 - `npm run dev` — Starts the development server.
-- `npm run build` — Compiles and builds the production application.
-- `npm run start` — Runs the compiled production build.
+- `npm run build` — Compiles production build.
+- `npm run start` — Runs production server.
 - `npm run lint` — Runs ESLint checks.
+- `npm run seed` — Populates database with the 35 TV shows for registered users.
