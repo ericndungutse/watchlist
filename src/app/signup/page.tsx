@@ -287,15 +287,25 @@ export default function SignupPage() {
           )}
         </div>
 
-        {/* Back to Home Link */}
-        <div className="text-center text-xs text-zinc-500">
-          Already have an account or want to explore first?{" "}
-          <Link
-            href="/"
-            className="font-medium text-indigo-400 hover:text-indigo-300 underline"
-          >
-            Back to Home
-          </Link>
+        {/* Login and Home Links */}
+        <div className="space-y-2 text-center text-xs text-zinc-500">
+          <p>
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-medium text-indigo-400 hover:text-indigo-300 underline"
+            >
+              Sign in here
+            </Link>
+          </p>
+          <p>
+            <Link
+              href="/"
+              className="text-zinc-500 hover:text-zinc-400 transition"
+            >
+              ← Back to Home
+            </Link>
+          </p>
         </div>
       </div>
     </div>

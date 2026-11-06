@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
+import { signAuthToken, getAuthCookieOptions } from "@/lib/auth";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -74,7 +75,17 @@ export async function POST(req: NextRequest) {
       role: "user",
     });
 
-    return NextResponse.json(
+    // Generate JWT token for immediate session
+    const token = await signAuthToken({
+      userId: newUser._id.toString(),
+      email: newUser.email,
+      fullName: newUser.fullName,
+      role: newUser.role,
+    });
+
+    const cookieOptions = getAuthCookieOptions();
+
+    const response = NextResponse.json(
       {
         success: true,
         message: "Account created successfully",
@@ -88,6 +99,10 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 }
     );
+
+    response.cookies.set(cookieOptions.name, token, cookieOptions);
+
+    return response;
   } catch (error: unknown) {
     console.error("Signup error:", error);
 

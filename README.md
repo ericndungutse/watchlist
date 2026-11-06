@@ -49,17 +49,18 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## Authentication & API Routes
 
+- **Login Page:** [http://localhost:3000/login](http://localhost:3000/login)
 - **Signup Page:** [http://localhost:3000/signup](http://localhost:3000/signup)
+- **Login API:** `POST /api/auth/login`
+  - Body: `{ "email": "user@example.com", "password": "password123" }`
+  - Result: Verifies password with bcrypt, signs JWT, and sets secure HTTP-only cookie (`ent_auth_token`).
 - **Signup API:** `POST /api/auth/signup`
-  - Body:
-    ```json
-    {
-      "fullName": "Jane Doe",
-      "email": "jane@example.com",
-      "password": "securepassword123"
-    }
-    ```
-  - Result: Hashes password with bcrypt, assigns default role `"user"`, stores in MongoDB, and returns created user without the password hash.
+  - Body: `{ "fullName": "Jane Doe", "email": "jane@example.com", "password": "securepassword123" }`
+  - Result: Hashes password with bcrypt, stores user, and automatically sets secure session cookie.
+- **Logout API:** `POST /api/auth/logout`
+  - Result: Clears the HTTP-only session cookie.
+- **Session Check API:** `GET /api/auth/me`
+  - Result: Returns current authenticated user claims from the JWT session.
 - **Health Check API:** `GET /api/health`
 
 ---
@@ -73,17 +74,28 @@ ent-tracker/
 │   ├── app/
 │   │   ├── api/
 │   │   │   ├── auth/
+│   │   │   │   ├── login/
+│   │   │   │   │   └── route.ts # User login & HTTP-only JWT cookie setter
+│   │   │   │   ├── logout/
+│   │   │   │   │   └── route.ts # User logout & cookie clearer
+│   │   │   │   ├── me/
+│   │   │   │   │   └── route.ts # Session validation endpoint
 │   │   │   │   └── signup/
 │   │   │   │       └── route.ts # User signup endpoint (bcrypt hash, role: 'user')
 │   │   │   └── health/
 │   │   │       └── route.ts     # Health check & DB connection test
+│   │   ├── login/
+│   │   │   └── page.tsx         # User login form
 │   │   ├── signup/
-│   │   │   └── page.tsx         # User signup form with validation & icons
+│   │   │   └── page.tsx         # User signup form
 │   │   ├── favicon.ico
 │   │   ├── globals.css          # Tailwind CSS styling
 │   │   ├── layout.tsx           # Root layout & metadata
-│   │   └── page.tsx             # Home landing page
+│   │   └── page.tsx             # Home landing page with live user session
+│   ├── components/
+│   │   └── LogoutButton.tsx     # Client-side sign out button
 │   ├── lib/
+│   │   ├── auth.ts              # JWT signing, verification, & cookie helpers (jose)
 │   │   └── mongodb.ts           # Cached Mongoose connection helper
 │   └── models/
 │       ├── Series.ts            # Mongoose Series schema & TypeScript interface

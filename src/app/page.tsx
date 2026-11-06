@@ -1,21 +1,22 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import {
   Tv,
   Database,
   ShieldCheck,
-  UserPlus,
   Activity,
   CheckCircle2,
   Code2,
 } from "lucide-react";
+import UserSessionNav from "@/components/UserSessionNav";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 p-6 text-zinc-100 sm:p-12">
       <main className="w-full max-w-3xl space-y-8 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-8 shadow-2xl backdrop-blur-sm sm:p-10">
-        {/* Header / Brand */}
-        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <div className="space-y-2">
+        {/* Header / Brand & Auth Actions */}
+        <div className="flex flex-col items-start justify-between gap-4 border-b border-zinc-800/80 pb-6 sm:flex-row sm:items-center">
+          <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300">
               <Tv className="h-3.5 w-3.5" />
               <span>Entertainment Tracker</span>
@@ -24,18 +25,18 @@ export default function Home() {
               EntTracker
             </h1>
             <p className="text-sm text-zinc-400">
-              Full-stack application for tracking TV series, watched seasons, and show
-              statuses (continuing, ended, or canceled).
+              Track your TV series, watched seasons, and show statuses.
             </p>
           </div>
 
-          <Link
-            href="/signup"
-            className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          {/* User Status / Action Buttons streamed via Suspense */}
+          <Suspense
+            fallback={
+              <div className="h-9 w-28 animate-pulse rounded-xl bg-zinc-800/60" />
+            }
           >
-            <UserPlus className="h-4 w-4" />
-            <span>Sign Up</span>
-          </Link>
+            <UserSessionNav />
+          </Suspense>
         </div>
 
         {/* Stack Overview */}
@@ -46,7 +47,7 @@ export default function Home() {
               <h3>Next.js 16</h3>
             </div>
             <p className="mt-1 text-xs text-zinc-400">
-              App Router, TypeScript, React 19 & Tailwind CSS v4
+              App Router, Server Components & Tailwind CSS v4
             </p>
           </div>
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4">
@@ -61,64 +62,68 @@ export default function Home() {
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4">
             <div className="flex items-center gap-2 font-semibold text-zinc-200">
               <ShieldCheck className="h-4 w-4 text-purple-400" />
-              <h3>Auth & Security</h3>
+              <h3>JWT & Cookies</h3>
             </div>
             <p className="mt-1 text-xs text-zinc-400">
-              Bcrypt password hashing, validation, & role support
+              HTTP-only secure cookie session management
             </p>
           </div>
         </div>
 
-        {/* Architecture & Endpoints */}
+        {/* Authentication & Session Modules */}
         <div className="space-y-3 rounded-xl border border-zinc-800/80 bg-zinc-950/50 p-5">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-300">
-            Implemented Full-Stack Modules
+            Authentication & Session Architecture
           </h2>
           <ul className="space-y-2.5 text-sm text-zinc-400">
             <li className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
               <span>
-                <strong>User Model & Auth:</strong> Full name, email, bcrypt password hash, and default role{" "}
-                <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-200">
-                  user
-                </code>{" "}
-                in{" "}
-                <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-200">
-                  src/models/User.ts
-                </code>
-              </span>
-            </li>
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-              <span>
-                <strong>Signup API:</strong> Route available at{" "}
+                <strong>Login API:</strong>{" "}
                 <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-indigo-300">
-                  POST /api/auth/signup
-                </code>
+                  POST /api/auth/login
+                </code>{" "}
+                — validates credentials and sets HTTP-only session cookie
               </span>
             </li>
             <li className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
               <span>
-                <strong>Signup UI Page:</strong> Client page with validation & show/hide passwords at{" "}
+                <strong>Logout API:</strong>{" "}
+                <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-indigo-300">
+                  POST /api/auth/logout
+                </code>{" "}
+                — clears the secure session cookie
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+              <span>
+                <strong>Session Verification API:</strong>{" "}
+                <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-indigo-300">
+                  GET /api/auth/me
+                </code>{" "}
+                — checks active session state
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+              <span>
+                <strong>Frontend Pages:</strong>{" "}
+                <Link
+                  href="/login"
+                  className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-indigo-300 underline hover:text-indigo-200"
+                >
+                  /login
+                </Link>{" "}
+                and{" "}
                 <Link
                   href="/signup"
                   className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-indigo-300 underline hover:text-indigo-200"
                 >
                   /signup
-                </Link>
-              </span>
-            </li>
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-              <span>
-                <strong>Database Health API:</strong> Connection check at{" "}
-                <a
-                  href="/api/health"
-                  className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-indigo-300 underline hover:text-indigo-200"
-                >
-                  /api/health
-                </a>
+                </Link>{" "}
+                with password visibility toggle and instant feedback
               </span>
             </li>
           </ul>
@@ -126,7 +131,7 @@ export default function Home() {
 
         {/* Footer */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-zinc-800/80 pt-6 text-xs text-zinc-500 sm:flex-row">
-          <span>Ready to track your favorite TV shows</span>
+          <span>Full-stack entertainment tracker</span>
           <div className="flex items-center gap-3">
             <a
               href="/api/health"
@@ -136,10 +141,10 @@ export default function Home() {
               <span>Health Check</span>
             </a>
             <Link
-              href="/signup"
+              href="/login"
               className="rounded-lg bg-indigo-600 px-3 py-1.5 font-medium text-white transition hover:bg-indigo-500"
             >
-              Create Account
+              Sign In
             </Link>
           </div>
         </div>
