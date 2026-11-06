@@ -261,7 +261,7 @@ export default function SeriesDashboard() {
         <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
           <div className="flex items-center justify-between text-xs font-medium text-slate-500">
             <span>Total Series</span>
-            <Tv className="h-4 w-4 text-indigo-600" />
+            <Tv className="h-4 w-4 text-teal-700" />
           </div>
           <div className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
             {stats.totalSeries}
@@ -341,14 +341,14 @@ export default function SeriesDashboard() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search TV series or notes (e.g., 'Silo', 'August 2026')..."
-            className="block w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder-slate-400 shadow-xs transition focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+            className="block w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder-slate-400 shadow-xs transition focus:border-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-600"
           />
         </div>
 
         <div className="flex items-center">
           <button
             onClick={() => openModal()}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-teal-700 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
           >
             <Plus className="h-4 w-4" />
             <span>Add Series</span>
@@ -413,7 +413,7 @@ export default function SeriesDashboard() {
       {/* Series Grid */}
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-20 text-slate-500 space-y-3">
-          <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-teal-700" />
           <p className="text-sm font-medium">Loading your TV series...</p>
         </div>
       ) : filteredSeries.length === 0 ? (
@@ -522,7 +522,7 @@ export default function SeriesDashboard() {
                           ? "bg-rose-600"
                           : item.status === "unknown"
                           ? "bg-slate-500"
-                          : "bg-indigo-600"
+                          : "bg-teal-700"
                       }`}
                       style={{ width: `${progressPercent}%` }}
                     />
@@ -548,7 +548,7 @@ export default function SeriesDashboard() {
                         }
                         disabled={watched >= total}
                         title="Increment watched season"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-2xs transition hover:bg-indigo-600 hover:text-white hover:border-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-2xs transition hover:bg-teal-700 hover:text-white hover:border-teal-700 disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <ChevronUp className="h-3.5 w-3.5" />
                       </button>
@@ -609,7 +609,7 @@ export default function SeriesDashboard() {
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   placeholder="e.g. Silo, House of the Dragon"
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2.5 px-3.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2.5 px-3.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-600"
                 />
               </div>
 
@@ -627,7 +627,7 @@ export default function SeriesDashboard() {
                     onChange={(e) =>
                       setFormSeasonsWatched(parseInt(e.target.value) || 0)
                     }
-                    className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:outline-none"
+                    className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 focus:bg-white focus:border-teal-600 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -641,7 +641,7 @@ export default function SeriesDashboard() {
                     onChange={(e) =>
                       setFormTotalSeasons(parseInt(e.target.value) || 0)
                     }
-                    className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:outline-none"
+                    className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 focus:bg-white focus:border-teal-600 focus:outline-none"
                   />
                 </div>
               </div>
@@ -656,7 +656,7 @@ export default function SeriesDashboard() {
                   onChange={(e) =>
                     setFormStatus(e.target.value as SeriesStatus)
                   }
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2.5 px-3 text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:outline-none"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2.5 px-3 text-sm text-slate-900 focus:bg-white focus:border-teal-600 focus:outline-none"
                 >
                   <option value="continuing">Continuing (Ongoing / Renewed)</option>
                   <option value="ended">Ended (Completed)</option>
@@ -675,7 +675,7 @@ export default function SeriesDashboard() {
                   value={formNotes}
                   onChange={(e) => setFormNotes(e.target.value)}
                   placeholder="e.g. Season 2 to release August 2026, awaiting final season..."
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-600 focus:outline-none"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50/50 py-2 px-3 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-teal-600 focus:outline-none"
                 />
               </div>
 
@@ -691,7 +691,7 @@ export default function SeriesDashboard() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-teal-700 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-teal-800 disabled:opacity-50"
                 >
                   {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                   <span>{editingSeries ? "Save Changes" : "Add to Library"}</span>

@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Tv, Activity, Loader2 } from "lucide-react";
+import { Activity, Loader2 } from "lucide-react";
 import UserSessionNav from "@/components/UserSessionNav";
 import MainContent from "@/components/MainContent";
+import BrandMark from "@/components/BrandMark";
 
 export default function Home() {
   return (
@@ -14,15 +15,13 @@ export default function Home() {
             href="/"
             className="flex items-center gap-2.5 transition hover:opacity-90"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-200/60 text-indigo-600 shadow-xs">
-              <Tv className="h-5 w-5" />
-            </div>
+            <BrandMark />
             <div>
               <span className="font-bold tracking-tight text-slate-900 sm:text-lg">
-                EntTracker
+                Watchlist
               </span>
               <span className="hidden text-[11px] font-medium text-slate-500 sm:inline ml-2">
-                TV Series & Season Tracker
+                Your series, all in one place
               </span>
             </div>
           </Link>
@@ -43,9 +42,9 @@ export default function Home() {
         <Suspense
           fallback={
             <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4">
-              <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+              <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
               <p className="text-sm font-medium text-slate-500">
-                Loading your TV tracker...
+                Loading your Watchlist...
               </p>
             </div>
           }
@@ -58,7 +57,7 @@ export default function Home() {
       <footer className="border-t border-slate-200 bg-white py-6 text-xs text-slate-500">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 lg:px-8">
           <span>
-            EntTracker &bull; Personal TV Series and Season Progress Tracker
+            Watchlist &bull; Your series, all in one place
           </span>
           <div className="flex items-center gap-4">
             <a

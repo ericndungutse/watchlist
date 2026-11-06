@@ -1,4 +1,4 @@
-# EntTracker
+# Watchlist
 
 A full-stack Next.js application designed to track TV series, available and watched seasons, and statuses (continuing, ended, canceled, unknown).
 

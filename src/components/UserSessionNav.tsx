@@ -11,12 +11,12 @@ export default async function UserSessionNav() {
       <div className="flex items-center gap-3">
         <div className="text-right">
           <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-900">
-            <User className="h-3.5 w-3.5 text-indigo-600" />
+            <User className="h-3.5 w-3.5 text-teal-700" />
             <span>{currentUser.fullName}</span>
           </div>
           <div className="flex items-center justify-end gap-1.5 text-xs text-slate-500">
             <span>{currentUser.email}</span>
-            <span className="rounded-md border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-indigo-700">
+            <span className="rounded-md border border-teal-200 bg-teal-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-teal-800">
               {currentUser.role}
             </span>
           </div>
@@ -37,7 +37,7 @@ export default async function UserSessionNav() {
       </Link>
       <Link
         href="/signup"
-        className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="inline-flex items-center gap-1.5 rounded-xl bg-teal-700 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
       >
         <UserPlus className="h-3.5 w-3.5" />
         <span>Sign Up</span>

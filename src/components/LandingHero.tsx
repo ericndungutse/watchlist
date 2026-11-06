@@ -12,13 +12,13 @@ export default function LandingHero() {
   return (
     <div className="space-y-8">
       {/* Hero Welcome Banner */}
-      <div className="rounded-2xl border border-indigo-100 bg-gradient-to-b from-indigo-50/60 to-white p-6 sm:p-8 text-center shadow-xs space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3.5 py-1 text-xs font-semibold text-indigo-700 shadow-xs">
-          <Sparkles className="h-3.5 w-3.5 text-indigo-600" />
-          <span>Track 35+ TV Shows & Seasons</span>
+      <div className="rounded-2xl border border-teal-100 bg-gradient-to-b from-teal-50/70 to-white p-6 sm:p-8 text-center shadow-xs space-y-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white px-3.5 py-1 text-xs font-semibold text-teal-800 shadow-xs">
+          <Sparkles className="h-3.5 w-3.5 text-teal-700" />
+          <span>Your personal series library</span>
         </div>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Your Personal TV Watchlist & Season Progress
+          Keep every season in sight.
         </h2>
         <p className="max-w-xl mx-auto text-sm text-slate-600 leading-relaxed">
           Log what you’ve watched, count completed seasons, and track ongoing,
@@ -28,7 +28,7 @@ export default function LandingHero() {
         <div className="flex items-center justify-center gap-3 pt-2">
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+            className="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800"
           >
             <UserPlus className="h-4 w-4" />
             <span>Create Free Account</span>

@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EntTracker - TV Series Tracker",
-  description: "Track your TV series, watched seasons, and show statuses.",
+  title: "Watchlist - Your Series, All in One Place",
+  description:
+    "Keep track of your series, available seasons, and watch progress.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
