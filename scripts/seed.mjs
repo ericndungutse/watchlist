@@ -1,7 +1,21 @@
 import mongoose from "mongoose";
+import nextEnv from "@next/env";
+
+nextEnv.loadEnvConfig(process.cwd());
 
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/ent-tracker";
+  process.env.NODE_ENV === "production"
+    ? process.env.MONGODB_URI_PROD
+    : process.env.NODE_ENV === "development"
+      ? process.env.MONGODB_URI_DEV
+      : undefined;
+
+if (!MONGODB_URI) {
+  throw new Error(
+    `Missing MongoDB URI for NODE_ENV="${process.env.NODE_ENV ?? ""}". ` +
+      "Set MONGODB_URI_DEV for development or MONGODB_URI_PROD for production.",
+  );
+}
 
 const RAW_SERIES = [
   {
@@ -255,7 +269,7 @@ const RAW_SERIES = [
 
 async function run() {
   await mongoose.connect(MONGODB_URI);
-  console.log("Connected to MongoDB at", MONGODB_URI);
+  console.log(`Connected to the ${process.env.NODE_ENV} database.`);
 
   const User = mongoose.model(
     "User",

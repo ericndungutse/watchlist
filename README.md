@@ -16,7 +16,7 @@ A full-stack Next.js application designed to track TV series, available and watc
 
 ### 1. Environment Setup
 
-Copy `.env.example` to `.env.local` and configure your MongoDB connection URI and JWT secret:
+Copy `.env.example` to `.env.local` and configure a separate MongoDB URI for each environment, plus a JWT secret:
 
 ```bash
 cp .env.example .env.local
@@ -24,9 +24,17 @@ cp .env.example .env.local
 
 Example in `.env.local`:
 ```env
-MONGODB_URI=mongodb://localhost:27017/ent-tracker
+NODE_ENV=development
+MONGODB_URI_DEV=mongodb://localhost:27017/ent-tracker-dev
+MONGODB_URI_PROD=mongodb://localhost:27017/ent-tracker-prod
 JWT_SECRET=your-secret-key-32-chars-long
 ```
+
+The application selects `MONGODB_URI_DEV` when `NODE_ENV=development` and
+`MONGODB_URI_PROD` when `NODE_ENV=production`. Next.js sets `NODE_ENV` for its
+development and production commands; production deployments must provide
+`MONGODB_URI_PROD`. The CLI seed command loads `.env.local` and uses the same
+environment selection.
 
 ### 2. Run Local MongoDB (Optional via Docker)
 
@@ -46,9 +54,9 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ### 4. Seed 35 TV Series
 
-You can seed your TV watchlist either:
-- Via the CLI: `npm run seed`
-- Or directly in the web UI using the **"Sync 35 Series"** button on the dashboard.
+Seed the predefined TV series into the database selected by `NODE_ENV` with
+`npm run seed`. The script requires the matching URI and does not fall back to
+another database.
 
 ---
 
